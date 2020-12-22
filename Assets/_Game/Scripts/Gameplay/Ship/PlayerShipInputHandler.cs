@@ -5,28 +5,25 @@ using UnityEngine.InputSystem;
 
 /// <summary>
 /// This script is designed to interpret the player's input and send the relevant actions
-/// to the functional components of the ship. This extra layer is to allow for BotAI to interpret
-/// actions in place of player input in other ships.
+/// to the ship. This extra layer is to allow for BotAI to interpret
+/// actions in place of player input in other ships, while keeping a consisent 'Ship' for behaviors
 /// </summary>
 [RequireComponent(typeof(PlayerInput))]
-[RequireComponent(typeof(ShipMovement))]
-[RequireComponent(typeof(ShipShooting))]
-public class PlayerShipController : MonoBehaviour
+[RequireComponent(typeof(Ship))]
+public class PlayerShipInputHandler : MonoBehaviour
 {
-    ShipMovement _shipMovement = null;
-    ShipShooting _shipShooting = null;
+    Ship _ship = null;
 
     private void Awake()
     {
-        _shipMovement = GetComponent<ShipMovement>();
-        _shipShooting = GetComponent<ShipShooting>();
+        _ship = GetComponent<Ship>();
     }
 
     public void OnShoot(InputAction.CallbackContext context)
     {
         if(context.phase == InputActionPhase.Performed)
         {
-            _shipShooting.Shoot();
+            _ship.Shoot();
             Debug.Log("Start weapon");
         }
         else if(context.phase == InputActionPhase.Canceled)
@@ -42,14 +39,14 @@ public class PlayerShipController : MonoBehaviour
 
         float turnAmount = movementInput.x;
 
-        _shipMovement.Turn(turnAmount);
+        _ship.Turn(turnAmount);
     }
 
     public void OnSpecial(InputAction.CallbackContext context)
     {
         if (context.phase == InputActionPhase.Performed)
         {
-            Debug.Log("Start special");
+            _ship.ActivateSpecal();
         }
         else if (context.phase == InputActionPhase.Canceled)
         {
@@ -61,11 +58,11 @@ public class PlayerShipController : MonoBehaviour
     {
         if (context.phase == InputActionPhase.Performed)
         {
-            _shipMovement.Boost(true);
+            _ship.Boost(true);
         }
         else if (context.phase == InputActionPhase.Canceled)
         {
-            _shipMovement.Boost(false);
+            _ship.Boost(false);
         }
     }
 
@@ -73,11 +70,11 @@ public class PlayerShipController : MonoBehaviour
     {
         if (context.phase == InputActionPhase.Performed)
         {
-            _shipMovement.Brake(true);
+            _ship.Brake(true);
         }
         else if (context.phase == InputActionPhase.Canceled)
         {
-            _shipMovement.Brake(false);
+            _ship.Brake(false);
         }
     }
 }

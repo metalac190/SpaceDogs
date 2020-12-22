@@ -8,9 +8,15 @@ public class ShipShooting : MonoBehaviour
     [SerializeField] VisualEffect _muzzleFlash;
     [SerializeField] AudioClip _shootSound;
 
+    [SerializeField] Projectile _defaultProjectilePrefab;
+    [SerializeField] Transform _projectileSpawnPoint;
+
     public void Shoot()
     {
-        AudioSource.PlayClipAtPoint(_shootSound, transform.position);
+        Projectile projectile = Instantiate(_defaultProjectilePrefab,
+            _projectileSpawnPoint.position, transform.rotation);
+        //TODO replace with Object Pooling
+        AudioHelper.PlayClip2D(_shootSound, 1);
         PlayVFX();
     }
 

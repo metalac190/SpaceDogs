@@ -1,26 +1,33 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.VFX;
 using System;
 
 [RequireComponent(typeof(Rigidbody))]
 public class ShipMovement : MonoBehaviour
 {
     public event Action<float> SpeedChanged;
+    public event Action<int> ChangedDirection;
+    public event Action<bool> Boosted;
+    public event Action<bool> Braked;
 
     [Header("Movement")]
     [SerializeField] float _startSpeed = 6;
     [SerializeField] float _maxSpeed = 6;
+    [SerializeField] Animator _animator = null;
 
     [Header("Boost")]
     [SerializeField] float _boostSpeedIncrease = 6;
     [SerializeField] float _boostAccelToMaxInSec = 1;
     [SerializeField] float _boostDecelToNormalInSec = 1;
+    [SerializeField] VisualEffect _boostVFX = null;
 
     [Header("Brake")]
     [SerializeField] float _brakeSpeedDecrease = 6;
     [SerializeField] float _brakeDecelToZeroInSec = 1;
     [SerializeField] float _brakeAccelToNormalInSec = 1;
+    [SerializeField] VisualEffect _brakeVFX = null;
 
     [Header("Rotation")]
     [SerializeField] float _turnSpeed = 3;
@@ -29,10 +36,12 @@ public class ShipMovement : MonoBehaviour
     [SerializeField] float _brakeToZeroInSec = .5f;
     [SerializeField] float _boostSpeed = 3;
 
+    [SerializeField] Transform _thrusterLocation;
+
     float _currentSpeed = 0;
     public float CurrentSpeed
     {
-        get => _currentSpeed;
+        get => _currentSpeed;   
         private set
         {
             // ensure we don't EVER exceed max speed
@@ -49,8 +58,51 @@ public class ShipMovement : MonoBehaviour
     Rigidbody _rb = null;
     Vector3 _requestedMovement;
     Quaternion _requestedRotation = Quaternion.identity;
+
     bool _isBraking = false;
+    public bool IsBraking
+    {
+        get => _isBraking;
+        private set
+        {
+            if(value != _isBraking)
+            {
+                Debug.Log("Braked: " + value);
+                Braked?.Invoke(value);
+            }
+            _isBraking = value;
+        }
+    }
+
     bool _isBoosting = false;
+    public bool IsBoosting
+    {
+        get => _isBoosting;
+        private set
+        {
+            if(value != _isBoosting)
+            {
+                Debug.Log("Boosted: " + value);
+                Boosted?.Invoke(value);
+            }
+            _isBoosting = value;
+        }
+    }
+
+    int _turnDirection = 0; // -1 for left, 0 for neutral, 1 for right
+    public int TurnDirection 
+    {
+        get => _turnDirection;
+        private set
+        {
+            value = Mathf.Clamp(value, -1, 1);
+            if(value != _turnDirection)
+            {
+                ChangedDirection?.Invoke(value);
+            }
+            _turnDirection = value;
+        }
+    } 
 
     // returns speed as a fraction of the max
     float CurrentMomentumRatio => (1 / _maxSpeed) * _currentSpeed;
@@ -79,21 +131,39 @@ public class ShipMovement : MonoBehaviour
 
     public void Turn(float turnAmount)
     {
+        DetermineTurnDirection(turnAmount);
+
         float turnOffset = turnAmount * _turnSpeed * Time.fixedDeltaTime;
         _requestedRotation = Quaternion.Euler(0, turnOffset, 0);
+    }
+
+    private void DetermineTurnDirection(float turnAmount)
+    {
+        if (turnAmount == 0)
+        {
+            TurnDirection = 0;
+        }
+        else if(turnAmount < 0)
+        {
+            TurnDirection = -1;
+        }
+        else if(turnAmount > 0)
+        {
+            TurnDirection = 1;
+        }
     }
 
     public void Brake(bool requestBrake)
     {
         // ensure we don't brake again if we're already braking
-        if (requestBrake == _isBraking)
+        if (requestBrake == IsBraking)
             return;
 
-        _isBraking = requestBrake;
-        Debug.Log("Brake! : " + _isBraking);
+        IsBraking = requestBrake;
 
-        if (_isBraking)
+        if (IsBraking)
         {
+            PlayBrakeVFX();
             _maxSpeed -= _brakeSpeedDecrease;
         }
         else
@@ -104,15 +174,14 @@ public class ShipMovement : MonoBehaviour
 
     public void Boost(bool requestBoost)
     {
-        if (requestBoost == _isBoosting)
+        if (requestBoost == IsBoosting)
             return;
 
-        _isBoosting = requestBoost;
-        Debug.Log("Boost! : " + _isBoosting);
+        IsBoosting = requestBoost;
 
-
-        if (_isBoosting)
+        if (IsBoosting)
         {
+            PlayBoostVFX();
             _maxSpeed += _boostSpeedIncrease;
         }
         else
@@ -146,5 +215,15 @@ public class ShipMovement : MonoBehaviour
     void ApplyTurn(Quaternion turnOffset)
     {
         _rb.MoveRotation(_rb.rotation * turnOffset);
+    }
+
+    void PlayBrakeVFX()
+    {
+        _brakeVFX.Play();
+    }
+
+    void PlayBoostVFX()
+    {
+        _boostVFX.Play();
     }
 }

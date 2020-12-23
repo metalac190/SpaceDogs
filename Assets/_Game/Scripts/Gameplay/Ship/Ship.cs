@@ -35,13 +35,19 @@ public class Ship : MonoBehaviour
         _shipMovement.Turn(turnAmount);
     }
 
-    public void Boost(bool shouldBoost)
+    public void Boost(bool requestBoost)
     {
-        _shipMovement.Boost(shouldBoost);
+        if (requestBoost)
+        {
+            _shipMovement.Boost();
+        }
     }
 
-    public void Brake(bool shouldBrake)
+    public void Brake(bool requestBrake)
     {
-        _shipMovement.Brake(shouldBrake);
+        if (requestBrake)
+        {
+            _shipMovement.Brake();
+        }
     }
 }

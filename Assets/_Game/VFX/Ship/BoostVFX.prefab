@@ -49,10 +49,10 @@ VisualEffect:
   m_PropertySheet:
     m_Float:
       m_Array:
-      - m_Value: 0.5
+      - m_Value: 10
         m_Name: FlashLifetimeMin
         m_Overridden: 1
-      - m_Value: 1
+      - m_Value: 10
         m_Name: FlashLifetimeMax
         m_Overridden: 1
     m_Vector2f:
@@ -106,13 +106,13 @@ VisualEffect:
             inWeight: 0
             outWeight: 0
           - serializedVersion: 3
-            time: 1
-            value: 1
-            inSlope: 0
-            outSlope: 0
+            time: 0.9893799
+            value: 0.37032318
+            inSlope: -2.1015809
+            outSlope: -2.1015809
             tangentMode: 0
             weightedMode: 0
-            inWeight: 0
+            inWeight: 0.15891455
             outWeight: 0
           m_PreInfinity: 2
           m_PostInfinity: 2

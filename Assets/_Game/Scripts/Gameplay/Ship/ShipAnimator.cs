@@ -9,11 +9,16 @@ public class ShipAnimator : MonoBehaviour
 
     ShipMovement _shipMovement = null;
 
-    const string IdleState = "Idle";
-    const string BoostState = "Boost";
-    const string BrakeState = "Brake";
-    const string TurnLeftState = "TurnLeft";
-    const string TurnRightState = "TurnRight";
+    // anim state names
+    const string BoostStateName = "Boost";
+    const string BrakeStateName = "Brake";
+
+    // turning layer
+    const string TurningLayerName = "Turning";
+    const string IdleStateName = "Idle";
+    const string TurnLeftStateName = "TurnLeft";
+    const string TurnRightStateName = "TurnRight";
+    int _turningLayerIndex;
 
     private void Awake()
     {
@@ -23,45 +28,47 @@ public class ShipAnimator : MonoBehaviour
             this.enabled = false;
         }
         _shipMovement = GetComponent<ShipMovement>();
+
+        _turningLayerIndex = _animator.GetLayerIndex(TurningLayerName);
     }
 
     private void OnEnable()
     {
         _shipMovement.ChangedDirection += OnChangedDirection;
-        _shipMovement.Boosted += OnBoosted;
-        _shipMovement.Braked += OnBraked;
+        _shipMovement.StartedBoost += OnStartedBoost;
+        _shipMovement.StartedBrake += OnStartedBrake;
     }
 
     private void OnDisable()
     {
         _shipMovement.ChangedDirection -= OnChangedDirection;
-        _shipMovement.Boosted -= OnBoosted;
-        _shipMovement.Braked -= OnBraked;
+        _shipMovement.StartedBoost -= OnStartedBoost;
+        _shipMovement.StartedBrake -= OnStartedBrake;
     }
 
     void OnChangedDirection(int newDirection)
     {
         if(newDirection == -1)
         {
-            _animator.CrossFadeInFixedTime(TurnLeftState, .3f);
+            _animator.CrossFadeInFixedTime(TurnLeftStateName, .3f, _turningLayerIndex);
         }
         else if(newDirection == 0)
         {
-            _animator.CrossFadeInFixedTime(IdleState, .3f);
+            _animator.CrossFadeInFixedTime(IdleStateName, .3f, _turningLayerIndex);
         }
         else if(newDirection == 1)
         {
-            _animator.CrossFadeInFixedTime(TurnRightState, .3f);
+            _animator.CrossFadeInFixedTime(TurnRightStateName, .3f, _turningLayerIndex);
         }
     }
 
-    void OnBoosted(bool isBoosting)
+    void OnStartedBoost()
     {
-        Debug.Log("Boost Animation");
+        _animator.CrossFadeInFixedTime(BoostStateName, .1f);
     }
 
-    void OnBraked(bool isBraking)
+    void OnStartedBrake()
     {
-        Debug.Log("Brake Animation");
+
     }
 }

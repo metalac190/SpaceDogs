@@ -9,34 +9,39 @@ public class ShipMovement : MonoBehaviour
 {
     public event Action<float> SpeedChanged;
     public event Action<int> ChangedDirection;
-    public event Action<bool> Boosted;
-    public event Action<bool> Braked;
+    public event Action StartedBoost;
+    public event Action StoppedBoost;
+    public event Action StartedBrake;
+    public event Action StoppedBrake;
+
+    [Header("General")]
+    [SerializeField] Transform _thrusterLocation;
 
     [Header("Movement")]
-    [SerializeField] float _startSpeed = 6;
-    [SerializeField] float _maxSpeed = 6;
-    [SerializeField] Animator _animator = null;
+    [SerializeField] float _startSpeed = 0;
+    [SerializeField] float _baseSpeed = .2f;
+    
+    [SerializeField] float _accelerationRateInSec = 1f;
+    [SerializeField] float _decelerationRateInSec = 1f;
+    public float AccelRatePerSecond => (_baseSpeed / _accelerationRateInSec) * Time.fixedDeltaTime;
+    public float DecelRatePerSecond => (_baseSpeed / _decelerationRateInSec) * Time.fixedDeltaTime;
 
     [Header("Boost")]
-    [SerializeField] float _boostSpeedIncrease = 6;
-    [SerializeField] float _boostAccelToMaxInSec = 1;
-    [SerializeField] float _boostDecelToNormalInSec = 1;
+    [SerializeField] float _boostSpeedIncrease = .2f;
+    [SerializeField] float _boostDuration = .5f;
+    [SerializeField] float _boostAccelToMaxInSec = .2f;
     [SerializeField] VisualEffect _boostVFX = null;
 
     [Header("Brake")]
-    [SerializeField] float _brakeSpeedDecrease = 6;
-    [SerializeField] float _brakeDecelToZeroInSec = 1;
-    [SerializeField] float _brakeAccelToNormalInSec = 1;
+    [SerializeField] float _brakeSpeedDecrease = .15f;
+    [SerializeField] float _brakeDuration = .5f;
+    [SerializeField] float _brakeDecelInSec = .2f;
     [SerializeField] VisualEffect _brakeVFX = null;
 
     [Header("Rotation")]
     [SerializeField] float _turnSpeed = 3;
 
-    [Header("Abilities")]
-    [SerializeField] float _brakeToZeroInSec = .5f;
-    [SerializeField] float _boostSpeed = 3;
-
-    [SerializeField] Transform _thrusterLocation;
+    //float _maxSpeed;
 
     float _currentSpeed = 0;
     public float CurrentSpeed
@@ -44,8 +49,6 @@ public class ShipMovement : MonoBehaviour
         get => _currentSpeed;   
         private set
         {
-            // ensure we don't EVER exceed max speed
-            value = Mathf.Clamp(value, 0, _maxSpeed);
             // check if our speed has changed
             if(value != _currentSpeed)
             {
@@ -54,40 +57,18 @@ public class ShipMovement : MonoBehaviour
             _currentSpeed = value;
         }
     }
+    public float BoostedMaxSpeed => _baseSpeed + _boostSpeedIncrease;
 
     Rigidbody _rb = null;
-    Vector3 _requestedMovement;
     Quaternion _requestedRotation = Quaternion.identity;
 
-    bool _isBraking = false;
-    public bool IsBraking
-    {
-        get => _isBraking;
-        private set
-        {
-            if(value != _isBraking)
-            {
-                Debug.Log("Braked: " + value);
-                Braked?.Invoke(value);
-            }
-            _isBraking = value;
-        }
-    }
+    public bool CanBrake { get; private set; } = true;
+    public bool IsBraking { get; private set; } = false;
+    Coroutine _brakeRoutine = null;
 
-    bool _isBoosting = false;
-    public bool IsBoosting
-    {
-        get => _isBoosting;
-        private set
-        {
-            if(value != _isBoosting)
-            {
-                Debug.Log("Boosted: " + value);
-                Boosted?.Invoke(value);
-            }
-            _isBoosting = value;
-        }
-    }
+    public bool CanBoost { get; private set; } = true;
+    public bool IsBoosting { get; private set; }
+    Coroutine _boostRoutine = null;
 
     int _turnDirection = 0; // -1 for left, 0 for neutral, 1 for right
     public int TurnDirection 
@@ -104,29 +85,56 @@ public class ShipMovement : MonoBehaviour
         }
     } 
 
-    // returns speed as a fraction of the max
-    float CurrentMomentumRatio => (1 / _maxSpeed) * _currentSpeed;
-
-    float BoostAccelRatePerSecond => (_maxSpeed / _boostAccelToMaxInSec) * Time.fixedDeltaTime;
-    float BoostDecelRatePerSecond => (_maxSpeed / _boostDecelToNormalInSec) * Time.fixedDeltaTime;
-
-    float BrakeDecelRatePerSecond => (_maxSpeed / _brakeToZeroInSec) * Time.fixedDeltaTime;
-
     private void Awake()
     {
         _rb = GetComponent<Rigidbody>();
+
+        CurrentSpeed = _startSpeed;
     }
 
     private void FixedUpdate()
     {
+
         // calculate new forces
-        Vector3 newMovement = transform.forward * _maxSpeed * Time.fixedDeltaTime;
+        ApplyMomentum();
+
+        Vector3 newMovement = transform.forward * CurrentSpeed;
         Quaternion newTurn = _requestedRotation;
 
-        newMovement = ApplyAccelDecel(newMovement);
-
+        Debug.Log("CurrentSpeed: " + CurrentSpeed);
         ApplyMove(newMovement);
         ApplyTurn(newTurn);
+    }
+
+    private void ApplyMomentum()
+    {
+        if (!IsBoosting && !IsBraking)
+        {
+            if (CurrentSpeed > _baseSpeed)
+            {
+                CurrentSpeed -= DecelRatePerSecond;
+                // clamp to avoid small fluctuations
+                if (CurrentSpeed < _baseSpeed)
+                    CurrentSpeed = _baseSpeed;
+            }
+            else if (CurrentSpeed < _baseSpeed)
+            {
+                CurrentSpeed += AccelRatePerSecond;
+                // clamp to avoid small fluctuations
+                if (CurrentSpeed > _baseSpeed)
+                    CurrentSpeed = _baseSpeed;
+            }
+        }
+    }
+
+    void ApplyMove(Vector3 moveOffset)
+    {
+        _rb.MovePosition(_rb.position + moveOffset);
+    }
+
+    void ApplyTurn(Quaternion turnOffset)
+    {
+        _rb.MoveRotation(_rb.rotation * turnOffset);
     }
 
     public void Turn(float turnAmount)
@@ -153,77 +161,120 @@ public class ShipMovement : MonoBehaviour
         }
     }
 
-    public void Brake(bool requestBrake)
+
+
+    public void Boost()
     {
-        // ensure we don't brake again if we're already braking
-        if (requestBrake == IsBraking)
+        // if we're already booosting, don't allow a new request
+        if (IsBoosting)
             return;
 
-        IsBraking = requestBrake;
+        StartBoost();
+    }
 
+    private void StartBoost()
+    {
+        IsBoosting = true;
+
+        _boostVFX?.Play();
+        StartedBoost?.Invoke();
+        
+        // allow ability to cancel brake with a boost
         if (IsBraking)
         {
-            PlayBrakeVFX();
-            _maxSpeed -= _brakeSpeedDecrease;
+            StopBrake();
         }
-        else
+
+        if (_boostRoutine != null)
         {
-            _maxSpeed += _brakeSpeedDecrease;
+            StopCoroutine(_boostRoutine);
+        }
+        _boostRoutine = StartCoroutine(BoostRoutine());
+    }
+
+    IEnumerator BoostRoutine()
+    {
+        // increase speed to boost max
+        float startSpeed = CurrentSpeed;
+        
+        // increase speed to max over time
+        for (float elapsedTime = 0; elapsedTime <= _boostAccelToMaxInSec; elapsedTime += Time.deltaTime)
+        {
+            CurrentSpeed = Mathf.Lerp(startSpeed, BoostedMaxSpeed, elapsedTime / _boostAccelToMaxInSec);
+            yield return null;
+        }
+
+        // wait out boost duration
+        yield return new WaitForSeconds(_boostDuration);
+
+        StopBoost();
+    }
+
+    private void StopBoost()
+    {
+        IsBoosting = false;
+
+        _boostVFX.Stop();
+        StoppedBoost?.Invoke();
+
+        if(_boostRoutine != null)
+        {
+            StopCoroutine(_boostRoutine);
         }
     }
 
-    public void Boost(bool requestBoost)
+    public void Brake()
     {
-        if (requestBoost == IsBoosting)
+        // if we're already braking, don't allow a new request
+        if (IsBraking)
             return;
 
-        IsBoosting = requestBoost;
+        StartBrake();
+    }
 
+    void StartBrake()
+    {
+        IsBraking = true;
+
+        _brakeVFX?.Play();
+        StartedBrake?.Invoke();
+        // allow ability to cancel a boost with a brake
         if (IsBoosting)
         {
-            PlayBoostVFX();
-            _maxSpeed += _boostSpeedIncrease;
+            StopBoost();
         }
-        else
+
+        if (_brakeRoutine != null)
+            StopCoroutine(_brakeRoutine);
+        _brakeRoutine = StartCoroutine(BrakeRoutine());
+    }
+
+    IEnumerator BrakeRoutine()
+    {
+        // decrease speed to brake amount
+        float startSpeed = CurrentSpeed;
+        float targetSpeed = _baseSpeed - _brakeSpeedDecrease;
+        // increase speed to max over time
+        for (float elapsedTime = 0; elapsedTime <= _brakeDecelInSec; elapsedTime += Time.deltaTime)
         {
-            _maxSpeed -= _boostSpeedIncrease;
-        }
-    }
-
-    Vector3 ApplyAccelDecel(Vector3 newMovement)
-    {
-        // if we're trying to move, accelerate
-        if (_currentSpeed != _maxSpeed && _isBoosting)
-        {
-            _currentSpeed += BoostAccelRatePerSecond;
-        }
-        else if(_currentSpeed != _maxSpeed && _isBraking)
-        {
-            //_currentSpeed 
+            CurrentSpeed = Mathf.Lerp(startSpeed, targetSpeed, elapsedTime / _brakeDecelInSec);
+            yield return null;
         }
 
-        _currentSpeed = Mathf.Clamp(_currentSpeed, 0, _maxSpeed);
+        // wait out boost duration
+        yield return new WaitForSeconds(_brakeDuration);
 
-        return newMovement;
+        StopBrake();
     }
 
-    void ApplyMove(Vector3 moveOffset)
+    void StopBrake()
     {
-         _rb.MovePosition(_rb.position + moveOffset);
-    }
+        IsBraking = false;
 
-    void ApplyTurn(Quaternion turnOffset)
-    {
-        _rb.MoveRotation(_rb.rotation * turnOffset);
-    }
+        _brakeVFX?.Stop();
+        StoppedBrake?.Invoke();
 
-    void PlayBrakeVFX()
-    {
-        _brakeVFX.Play();
-    }
-
-    void PlayBoostVFX()
-    {
-        _boostVFX.Play();
+        if (_brakeRoutine != null)
+            StopCoroutine(_brakeRoutine);
     }
 }

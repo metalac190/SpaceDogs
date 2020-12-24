@@ -5,11 +5,20 @@ using UnityEngine.VFX;
 
 public class ShipShooting : MonoBehaviour
 {
+    [Header("Dependencies")]
+    [SerializeField] Ship _ship = null;
+
+    [Header("Shooting")]
     [SerializeField] VisualEffect _muzzleFlash;
     [SerializeField] AudioClip _shootSound;
 
     [SerializeField] Projectile _defaultProjectilePrefab;
     [SerializeField] Transform _projectileSpawnPoint;
+
+    private void Awake()
+    {
+        // fill dependencies here
+    }
 
     public void Shoot()
     {

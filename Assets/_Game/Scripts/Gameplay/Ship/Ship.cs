@@ -5,27 +5,34 @@ using UnityEngine;
 /// <summary>
 /// This class primarily serves as a 'HUB' for the major ship components. Both players and AI will talk
 /// to this component, and it will receive this commands and send them out to relevant components.
-/// This class also serves as a convenient entry point for detecting if a gameObject is a 'Ship', either Player or bot
+/// This class also serves as a convenient entry point for detecting if a gameObject is a 'Ship', either Player or bot.
+/// Basically... if it's specific to the ship, child objects with reference are fine. If it's generic, keep the component
+/// on the Player root for GetComponent() searches, and optionally give it a field if you wish (for convenience).
 /// </summary>
-[RequireComponent(typeof(ShipMovement))]
-[RequireComponent(typeof(ShipShooting))]
-[RequireComponent(typeof(ShipTricks))]
+
+[RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(HealthSystem))]
+[RequireComponent(typeof(EnergySystem))]
 public class Ship : MonoBehaviour
 {
-    ShipMovement _shipMovement = null;
-    ShipShooting _shipShooting = null;
-    ShipTricks _shipTricks = null;
+    [SerializeField] ShipMovement _movement = null;
+    public ShipMovement Movement => _movement;
 
-    private void Awake()
-    {
-        _shipMovement = GetComponent<ShipMovement>();
-        _shipShooting = GetComponent<ShipShooting>();
-        _shipTricks = GetComponent<ShipTricks>();
-    }
+    [SerializeField] ShipTricks _tricks = null;
+    public ShipTricks Tricks => _tricks;
+
+    [SerializeField] ShipAnimator _shipAnimator = null;
+    public ShipAnimator ShipAnimator => _shipAnimator;
+
+    [SerializeField] ShipShooting _shooting = null;
+    public ShipShooting Shooting => _shooting;
+
+    [SerializeField] Animator _animator = null;
+    public Animator Animator => _animator;
 
     public void Shoot()
     {
-        _shipShooting.Shoot();
+        _shooting.Shoot();
     }
 
     public void ActivateSpecal()
@@ -35,14 +42,14 @@ public class Ship : MonoBehaviour
 
     public void Turn(float turnAmount)
     {
-        _shipMovement.Turn(turnAmount);
+        _movement.Turn(turnAmount);
     }
 
     public void Boost(bool requestBoost)
     {
         if (requestBoost)
         {
-            _shipTricks.Boost();
+            _tricks.Boost();
         }
     }
 
@@ -50,7 +57,7 @@ public class Ship : MonoBehaviour
     {
         if (requestBrake)
         {
-            _shipTricks.Brake();
+            _tricks.Brake();
         }
     }
 }

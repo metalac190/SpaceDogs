@@ -4,13 +4,16 @@ using UnityEngine;
 using UnityEngine.VFX;
 using System;
 
-[RequireComponent(typeof(ShipMovement))]
 public class ShipTricks : MonoBehaviour
 {
+    public event Action<int> EnergyChanged;
     public event Action StartedBoost;
     public event Action StoppedBoost;
     public event Action StartedBrake;
     public event Action StoppedBrake;
+
+    [Header("Dependencies")]
+    [SerializeField] Ship _ship = null;
 
     [Header("Boost")]
     [SerializeField] float _boostSpeedIncrease = .2f;
@@ -24,6 +27,27 @@ public class ShipTricks : MonoBehaviour
     [SerializeField] float _brakeDecelInSec = .2f;
     [SerializeField] VisualEffect _brakeVFX = null;
 
+    [Header("Energy")]
+    [SerializeField] int _startEnergy = 0;
+    [SerializeField] int _maxEnergy = 100;
+    [SerializeField] int _energyFillPerSecond = 20;
+
+    int _currentEnergy;
+    public int CurrentEnergy
+    {
+        get => _currentEnergy;
+        private set
+        {
+            value = Mathf.Clamp(value, 0, 100);
+            // check if our speed has changed
+            if (value != _currentEnergy)
+            {
+                EnergyChanged?.Invoke(value);
+            }
+            _currentEnergy = value;
+        }
+    }
+ 
     public bool CanBrake { get; private set; } = true;
     public bool IsBraking { get; private set; } = false;
     Coroutine _brakeRoutine = null;
@@ -36,7 +60,7 @@ public class ShipTricks : MonoBehaviour
 
     private void Awake()
     {
-        _shipMovement = GetComponent<ShipMovement>();
+        _shipMovement = _ship.Movement;
     }
 
     public void Boost()
@@ -142,6 +166,7 @@ public class ShipTricks : MonoBehaviour
         }
 
         // wait out boost duration
+        _shipMovement.LockSpeed(_boostDuration);
         yield return new WaitForSeconds(_brakeDuration);
 
         StopBrake();

@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.VFX;
 using System;
 
-public class Health : MonoBehaviour, IDamageable, IHealable
+public class HealthSystem : MonoBehaviour, IDamageable, IHealable
 {
     public event Action<int> Damaged;
     public event Action<int> Healed;

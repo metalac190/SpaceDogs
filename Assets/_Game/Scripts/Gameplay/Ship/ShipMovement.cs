@@ -4,11 +4,13 @@ using UnityEngine;
 using UnityEngine.VFX;
 using System;
 
-[RequireComponent(typeof(Rigidbody))]
 public class ShipMovement : MonoBehaviour
 {
     public event Action<float> SpeedChanged;
     public event Action<int> ChangedDirection;
+
+    [Header("Dependencies")]
+    [SerializeField] Ship _ship = null;
 
     [Header("General")]
     [SerializeField] Transform _thrusterLocation;
@@ -23,7 +25,7 @@ public class ShipMovement : MonoBehaviour
     public float DecelRatePerSecond => (_baseSpeed / _decelerationRateInSec) * Time.fixedDeltaTime;
 
     [Header("Rotation")]
-    [SerializeField] float _turnSpeed = 3;
+    [SerializeField] float _turnSpeed = 100;
 
     public float BaseSpeed => _baseSpeed;
     bool _speedLock = false;
@@ -46,11 +48,8 @@ public class ShipMovement : MonoBehaviour
         }
     }
 
-
-    Rigidbody _rb = null;
+    Rigidbody _rb;
     Quaternion _requestedRotation = Quaternion.identity;
-
-
 
     int _turnDirection = 0; // -1 for left, 0 for neutral, 1 for right
     public int TurnDirection 
@@ -69,7 +68,7 @@ public class ShipMovement : MonoBehaviour
 
     private void Awake()
     {
-        _rb = GetComponent<Rigidbody>();
+        _rb = _ship.GetComponent<Rigidbody>();
 
         CurrentSpeed = _startSpeed;
     }

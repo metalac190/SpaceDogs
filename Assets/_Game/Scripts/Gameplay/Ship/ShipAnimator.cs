@@ -2,12 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(ShipMovement))]
-[RequireComponent(typeof(ShipTricks))]
 public class ShipAnimator : MonoBehaviour
 {
-    [SerializeField] Animator _animator = null;
+    [SerializeField] Ship _ship = null;
 
+    Animator _animator = null;
     ShipMovement _shipMovement = null;
     ShipTricks _shipTricks = null;
 
@@ -24,13 +23,9 @@ public class ShipAnimator : MonoBehaviour
 
     private void Awake()
     {
-        if(_animator == null)
-        {
-            Debug.LogWarning("Not animator assigned to ship! " + gameObject.name);
-            this.enabled = false;
-        }
-        _shipMovement = GetComponent<ShipMovement>();
-        _shipTricks = GetComponent<ShipTricks>();
+        _animator = _ship.Animator;
+        _shipMovement = _ship.Movement;
+        _shipTricks = _ship.Tricks;
 
         _turningLayerIndex = _animator.GetLayerIndex(TurningLayerName);
     }

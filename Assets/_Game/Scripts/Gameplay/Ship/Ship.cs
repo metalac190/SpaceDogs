@@ -9,15 +9,18 @@ using UnityEngine;
 /// </summary>
 [RequireComponent(typeof(ShipMovement))]
 [RequireComponent(typeof(ShipShooting))]
+[RequireComponent(typeof(ShipTricks))]
 public class Ship : MonoBehaviour
 {
     ShipMovement _shipMovement = null;
     ShipShooting _shipShooting = null;
+    ShipTricks _shipTricks = null;
 
     private void Awake()
     {
         _shipMovement = GetComponent<ShipMovement>();
         _shipShooting = GetComponent<ShipShooting>();
+        _shipTricks = GetComponent<ShipTricks>();
     }
 
     public void Shoot()
@@ -39,7 +42,7 @@ public class Ship : MonoBehaviour
     {
         if (requestBoost)
         {
-            _shipMovement.Boost();
+            _shipTricks.Boost();
         }
     }
 
@@ -47,7 +50,7 @@ public class Ship : MonoBehaviour
     {
         if (requestBrake)
         {
-            _shipMovement.Brake();
+            _shipTricks.Brake();
         }
     }
 }

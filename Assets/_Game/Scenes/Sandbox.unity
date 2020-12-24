@@ -836,46 +836,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 481136175}
     m_Modifications:
-    - target: {fileID: 485167642, guid: a99de5c1b96a2a345884b51bc9e10ed8, type: 3}
-      propertyPath: _baseSpeed
-      value: 0.1
-      objectReference: {fileID: 0}
-    - target: {fileID: 485167642, guid: a99de5c1b96a2a345884b51bc9e10ed8, type: 3}
-      propertyPath: _startSpeed
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 485167642, guid: a99de5c1b96a2a345884b51bc9e10ed8, type: 3}
-      propertyPath: _boostDuration
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 485167642, guid: a99de5c1b96a2a345884b51bc9e10ed8, type: 3}
-      propertyPath: _brakeDuration
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 485167642, guid: a99de5c1b96a2a345884b51bc9e10ed8, type: 3}
-      propertyPath: _brakeDecelInSec
-      value: 0.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 485167642, guid: a99de5c1b96a2a345884b51bc9e10ed8, type: 3}
-      propertyPath: _boostSpeedIncrease
-      value: 0.15
-      objectReference: {fileID: 0}
-    - target: {fileID: 485167642, guid: a99de5c1b96a2a345884b51bc9e10ed8, type: 3}
-      propertyPath: _brakeSpeedDecrease
-      value: 0.05
-      objectReference: {fileID: 0}
-    - target: {fileID: 485167642, guid: a99de5c1b96a2a345884b51bc9e10ed8, type: 3}
-      propertyPath: _boostAccelToMaxInSec
-      value: 0.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 485167642, guid: a99de5c1b96a2a345884b51bc9e10ed8, type: 3}
-      propertyPath: _accelerationRateInSec
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 485167642, guid: a99de5c1b96a2a345884b51bc9e10ed8, type: 3}
-      propertyPath: _decelerationRateInSec
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 1682430659, guid: a99de5c1b96a2a345884b51bc9e10ed8, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 

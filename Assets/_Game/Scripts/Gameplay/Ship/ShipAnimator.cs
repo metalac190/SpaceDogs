@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(ShipMovement))]
+[RequireComponent(typeof(ShipTricks))]
 public class ShipAnimator : MonoBehaviour
 {
     [SerializeField] Animator _animator = null;
 
     ShipMovement _shipMovement = null;
+    ShipTricks _shipTricks = null;
 
     // anim state names
     const string BoostStateName = "Boost";
@@ -28,6 +30,7 @@ public class ShipAnimator : MonoBehaviour
             this.enabled = false;
         }
         _shipMovement = GetComponent<ShipMovement>();
+        _shipTricks = GetComponent<ShipTricks>();
 
         _turningLayerIndex = _animator.GetLayerIndex(TurningLayerName);
     }
@@ -35,15 +38,15 @@ public class ShipAnimator : MonoBehaviour
     private void OnEnable()
     {
         _shipMovement.ChangedDirection += OnChangedDirection;
-        _shipMovement.StartedBoost += OnStartedBoost;
-        _shipMovement.StartedBrake += OnStartedBrake;
+        _shipTricks.StartedBoost += OnStartedBoost;
+        _shipTricks.StartedBrake += OnStartedBrake;
     }
 
     private void OnDisable()
     {
         _shipMovement.ChangedDirection -= OnChangedDirection;
-        _shipMovement.StartedBoost -= OnStartedBoost;
-        _shipMovement.StartedBrake -= OnStartedBrake;
+        _shipTricks.StartedBoost -= OnStartedBoost;
+        _shipTricks.StartedBrake -= OnStartedBrake;
     }
 
     void OnChangedDirection(int newDirection)

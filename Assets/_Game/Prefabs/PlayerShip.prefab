@@ -947,6 +947,7 @@ GameObject:
   - component: {fileID: 3904638483324717891}
   - component: {fileID: 1093287007291441108}
   - component: {fileID: 885907976}
+  - component: {fileID: 346192003183515620}
   m_Layer: 0
   m_Name: PlayerShip
   m_TagString: Player
@@ -1175,18 +1176,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _thrusterLocation: {fileID: 1931119421}
-  _startSpeed: 6
-  _baseSpeed: 6
-  _accelerationRateInSec: 0.5
-  _decelerationRateInSec: 0.5
-  _boostSpeedIncrease: 10
-  _boostDuration: 1
-  _boostAccelToMaxInSec: 0.15
-  _boostVFX: {fileID: 2032859286807428298}
-  _brakeSpeedDecrease: 3
-  _brakeDuration: 1
-  _brakeDecelInSec: 0.5
-  _brakeVFX: {fileID: 8238202473989808861}
+  _startSpeed: 0
+  _baseSpeed: 0.1
+  _accelerationRateInSec: 1
+  _decelerationRateInSec: 1
   _turnSpeed: 100
 --- !u!114 &1427778118239743808
 MonoBehaviour:
@@ -1250,6 +1243,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _animator: {fileID: 543763309649236016}
+--- !u!114 &346192003183515620
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6780991284986635673}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ea32ea4436aaf548bf979396a428721, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _boostSpeedIncrease: 0.2
+  _boostDuration: 0.5
+  _boostAccelToMaxInSec: 0.2
+  _boostVFX: {fileID: 2032859286807428298}
+  _brakeSpeedDecrease: 0.08
+  _brakeDuration: 1
+  _brakeDecelInSec: 0.2
+  _brakeVFX: {fileID: 8238202473989808861}
 --- !u!1 &7915331933322393292
 GameObject:
   m_ObjectHideFlags: 0

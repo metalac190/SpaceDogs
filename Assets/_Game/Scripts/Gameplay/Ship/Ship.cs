@@ -12,7 +12,6 @@ using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(HealthSystem))]
-[RequireComponent(typeof(EnergySystem))]
 public class Ship : MonoBehaviour
 {
     [SerializeField] ShipMovement _movement = null;
@@ -29,6 +28,9 @@ public class Ship : MonoBehaviour
 
     [SerializeField] Animator _animator = null;
     public Animator Animator => _animator;
+
+    [SerializeField] EnergySystem _energy = null;
+    public EnergySystem Energy => _energy;
 
     public void Shoot()
     {

@@ -6,7 +6,6 @@ using System;
 
 public class ShipTricks : MonoBehaviour
 {
-    public event Action<int> EnergyChanged;
     public event Action StartedBoost;
     public event Action StoppedBoost;
     public event Action StartedBrake;
@@ -16,37 +15,18 @@ public class ShipTricks : MonoBehaviour
     [SerializeField] Ship _ship = null;
 
     [Header("Boost")]
+    [SerializeField] int _boostEnergyCost = 25;
     [SerializeField] float _boostSpeedIncrease = .2f;
     [SerializeField] float _boostDuration = .5f;
     [SerializeField] float _boostAccelToMaxInSec = .2f;
     [SerializeField] VisualEffect _boostVFX = null;
 
     [Header("Brake")]
+    [SerializeField] int _brakeEnergyCost = 25;
     [SerializeField] float _brakeSpeedDecrease = .15f;
     [SerializeField] float _brakeDuration = .5f;
     [SerializeField] float _brakeDecelInSec = .2f;
     [SerializeField] VisualEffect _brakeVFX = null;
-
-    [Header("Energy")]
-    [SerializeField] int _startEnergy = 0;
-    [SerializeField] int _maxEnergy = 100;
-    [SerializeField] int _energyFillPerSecond = 20;
-
-    int _currentEnergy;
-    public int CurrentEnergy
-    {
-        get => _currentEnergy;
-        private set
-        {
-            value = Mathf.Clamp(value, 0, 100);
-            // check if our speed has changed
-            if (value != _currentEnergy)
-            {
-                EnergyChanged?.Invoke(value);
-            }
-            _currentEnergy = value;
-        }
-    }
  
     public bool CanBrake { get; private set; } = true;
     public bool IsBraking { get; private set; } = false;
@@ -57,16 +37,21 @@ public class ShipTricks : MonoBehaviour
     Coroutine _boostRoutine = null;
 
     ShipMovement _shipMovement = null;
+    EnergySystem _energy = null;
 
     private void Awake()
     {
         _shipMovement = _ship.Movement;
+        _energy = _ship.Energy;
     }
 
     public void Boost()
     {
         // if we're already booosting, don't allow a new request
         if (IsBoosting)
+            return;
+        // check if we have enough energy
+        if (_energy.HasEnoughEnergy(_boostEnergyCost) == false)
             return;
 
         StartBoost();
@@ -76,6 +61,7 @@ public class ShipTricks : MonoBehaviour
     {
         IsBoosting = true;
 
+        _energy.UseEnergy(_boostEnergyCost);
         _boostVFX.Play();
         StartedBoost?.Invoke();
 
@@ -131,6 +117,8 @@ public class ShipTricks : MonoBehaviour
         // if we're already braking, don't allow a new request
         if (IsBraking)
             return;
+        if (_energy.HasEnoughEnergy(_brakeEnergyCost) == false)
+            return;
 
         StartBrake();
     }
@@ -139,6 +127,7 @@ public class ShipTricks : MonoBehaviour
     {
         IsBraking = true;
 
+        _energy.UseEnergy(_brakeEnergyCost);
         _brakeVFX.Play();
         StartedBrake?.Invoke();
         // allow ability to cancel a boost with a brake

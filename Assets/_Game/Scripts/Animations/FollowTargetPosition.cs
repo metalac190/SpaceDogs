@@ -15,7 +15,7 @@ public class FollowTargetPosition : MonoBehaviour
         }
     }
 
-    public void SetTarget(Transform targetTransform, Vector3 offset)
+    public void SetTarget(Transform targetTransform)
     {
         _targetLocation = targetTransform;
     }

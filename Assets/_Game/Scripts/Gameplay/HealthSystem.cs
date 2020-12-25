@@ -6,6 +6,7 @@ using System;
 
 public class HealthSystem : MonoBehaviour, IDamageable, IHealable
 {
+    public event Action<int> ChangedHealth;
     public event Action<int> Damaged;
     public event Action<int> Healed;
     public event Action Killed;
@@ -31,6 +32,10 @@ public class HealthSystem : MonoBehaviour, IDamageable, IHealable
         set
         {
             value = Mathf.Clamp(value, 0, _maxHealth);
+            if (value != _currentHealth)
+            {
+                ChangedHealth?.Invoke(value);
+            }
             _currentHealth = value;
         }
     }

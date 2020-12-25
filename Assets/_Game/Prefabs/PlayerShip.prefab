@@ -573,7 +573,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3521493955739031106}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -1.71}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 6428405208994533234}
@@ -1426,6 +1426,8 @@ MonoBehaviour:
   _shooting: {fileID: 1651842241942708008}
   _animator: {fileID: 543763309649236016}
   _energy: {fileID: 1656033053458430714}
+  _shipHUDPrefab: {fileID: 6669703644467926786, guid: c26850620a9794d40862e1818ec476b2, type: 3}
+  _hudSocket: {fileID: 8049909870440398688}
 --- !u!114 &2477870174612904947
 MonoBehaviour:
   m_ObjectHideFlags: 0

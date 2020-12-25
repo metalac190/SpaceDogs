@@ -23,6 +23,7 @@ public class EnergySystem : MonoBehaviour
     [Header("Energy")]
     [SerializeField] int _startEnergy = 0;
     [SerializeField] int _maxEnergy = 100;
+    public int MaxEnergy => _maxEnergy;
 
     [Header("Fill")]
     [SerializeField] int _energyFillPerSecond = 10;

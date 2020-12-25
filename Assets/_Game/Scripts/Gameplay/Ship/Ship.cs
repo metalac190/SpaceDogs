@@ -32,6 +32,21 @@ public class Ship : MonoBehaviour
     [SerializeField] EnergySystem _energy = null;
     public EnergySystem Energy => _energy;
 
+    [Header("HUD Settings")]
+    [SerializeField] ShipHUDController _shipHUDPrefab = null;
+    [SerializeField] Transform _hudSocket = null;
+    ShipHUDController _shipHUD = null;
+
+    public HealthSystem Health { get; private set; }
+
+    public void Awake()
+    {
+        HealthSystem Health = GetComponent<HealthSystem>();
+
+        _shipHUD = Instantiate(_shipHUDPrefab, _hudSocket.position, _hudSocket.rotation);
+        _shipHUD.Initialize(Health, Energy, transform);
+    }
+
     public void Shoot()
     {
         _shooting.Shoot();

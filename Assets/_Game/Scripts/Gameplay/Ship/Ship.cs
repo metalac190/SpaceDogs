@@ -11,7 +11,7 @@ using UnityEngine;
 /// </summary>
 
 [RequireComponent(typeof(Rigidbody))]
-[RequireComponent(typeof(HealthSystem))]
+[RequireComponent(typeof(Collider))]
 public class Ship : MonoBehaviour
 {
     [SerializeField] ShipMovement _movement = null;
@@ -32,19 +32,20 @@ public class Ship : MonoBehaviour
     [SerializeField] EnergySystem _energy = null;
     public EnergySystem Energy => _energy;
 
-    [Header("HUD Settings")]
-    [SerializeField] ShipHUDController _shipHUDPrefab = null;
-    [SerializeField] Transform _hudSocket = null;
-    ShipHUDController _shipHUD = null;
+    [SerializeField] ShipHUDController _shipHUD = null;
+    public ShipHUDController HUD => _shipHUD;
 
-    public HealthSystem Health { get; private set; }
+    [SerializeField] HealthSystem _health = null;
+    public HealthSystem Health => _health;
 
-    public void Awake()
+    private void OnEnable()
     {
-        HealthSystem Health = GetComponent<HealthSystem>();
+        _health.Killed += OnKilled;
+    }
 
-        _shipHUD = Instantiate(_shipHUDPrefab, _hudSocket.position, _hudSocket.rotation);
-        _shipHUD.Initialize(Health, Energy, transform);
+    private void OnDisable()
+    {
+        _health.Killed -= OnKilled;
     }
 
     public void Shoot()
@@ -76,5 +77,11 @@ public class Ship : MonoBehaviour
         {
             _tricks.Brake();
         }
+    }
+
+    void OnKilled()
+    {
+        Debug.Log("Player killed!");
+        Destroy(gameObject);
     }
 }

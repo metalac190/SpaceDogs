@@ -24,7 +24,6 @@ public class PlayerShipInputHandler : MonoBehaviour
         if(context.phase == InputActionPhase.Performed)
         {
             _ship.Shoot();
-            Debug.Log("Start weapon");
         }
         else if(context.phase == InputActionPhase.Canceled)
         {

@@ -19,7 +19,7 @@ public class @GameInput : IInputActionCollection, IDisposable
             ""id"": ""e968a0be-ac0b-4c37-bf38-bdad1512fdb1"",
             ""actions"": [
                 {
-                    ""name"": ""Button01"",
+                    ""name"": ""Fire"",
                     ""type"": ""Button"",
                     ""id"": ""09759bf2-9cae-4180-a81a-679d10e53d51"",
                     ""expectedControlType"": ""Button"",
@@ -27,7 +27,7 @@ public class @GameInput : IInputActionCollection, IDisposable
                     ""interactions"": """"
                 },
                 {
-                    ""name"": ""Button02"",
+                    ""name"": ""SpecialFire"",
                     ""type"": ""Button"",
                     ""id"": ""9b60dcad-75e6-4bd3-a605-9e0f09d8e142"",
                     ""expectedControlType"": ""Button"",
@@ -35,7 +35,7 @@ public class @GameInput : IInputActionCollection, IDisposable
                     ""interactions"": """"
                 },
                 {
-                    ""name"": ""Button03"",
+                    ""name"": ""Boost"",
                     ""type"": ""Button"",
                     ""id"": ""3cc36d48-cc10-4516-8745-c5d7f7127ad5"",
                     ""expectedControlType"": ""Button"",
@@ -43,7 +43,7 @@ public class @GameInput : IInputActionCollection, IDisposable
                     ""interactions"": """"
                 },
                 {
-                    ""name"": ""Button04"",
+                    ""name"": ""Brake"",
                     ""type"": ""Button"",
                     ""id"": ""d137fa0c-230b-4a53-ba74-df3e19ddb8bd"",
                     ""expectedControlType"": ""Button"",
@@ -123,7 +123,7 @@ public class @GameInput : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""MouseAndKeyboard"",
-                    ""action"": ""Button01"",
+                    ""action"": ""Fire"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -134,7 +134,7 @@ public class @GameInput : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""MouseAndKeyboard"",
-                    ""action"": ""Button02"",
+                    ""action"": ""SpecialFire"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -273,22 +273,22 @@ public class @GameInput : IInputActionCollection, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""f53ad934-ba23-4b74-b9b7-ade12c5c9e88"",
-                    ""path"": ""<Keyboard>/leftShift"",
+                    ""path"": ""<Keyboard>/w"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""MouseAndKeyboard"",
-                    ""action"": ""Button03"",
+                    ""action"": ""Boost"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
                     ""id"": ""ec1d9cd6-fed1-417a-b537-bcd13ebcbfe9"",
-                    ""path"": ""<Keyboard>/space"",
+                    ""path"": ""<Keyboard>/s"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""MouseAndKeyboard"",
-                    ""action"": ""Button04"",
+                    ""action"": ""Brake"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -592,10 +592,10 @@ public class @GameInput : IInputActionCollection, IDisposable
 }");
         // Game
         m_Game = asset.FindActionMap("Game", throwIfNotFound: true);
-        m_Game_Button01 = m_Game.FindAction("Button01", throwIfNotFound: true);
-        m_Game_Button02 = m_Game.FindAction("Button02", throwIfNotFound: true);
-        m_Game_Button03 = m_Game.FindAction("Button03", throwIfNotFound: true);
-        m_Game_Button04 = m_Game.FindAction("Button04", throwIfNotFound: true);
+        m_Game_Fire = m_Game.FindAction("Fire", throwIfNotFound: true);
+        m_Game_SpecialFire = m_Game.FindAction("SpecialFire", throwIfNotFound: true);
+        m_Game_Boost = m_Game.FindAction("Boost", throwIfNotFound: true);
+        m_Game_Brake = m_Game.FindAction("Brake", throwIfNotFound: true);
         m_Game_Move = m_Game.FindAction("Move", throwIfNotFound: true);
         m_Game_Look = m_Game.FindAction("Look", throwIfNotFound: true);
         m_Game_Start = m_Game.FindAction("Start", throwIfNotFound: true);
@@ -661,10 +661,10 @@ public class @GameInput : IInputActionCollection, IDisposable
     // Game
     private readonly InputActionMap m_Game;
     private IGameActions m_GameActionsCallbackInterface;
-    private readonly InputAction m_Game_Button01;
-    private readonly InputAction m_Game_Button02;
-    private readonly InputAction m_Game_Button03;
-    private readonly InputAction m_Game_Button04;
+    private readonly InputAction m_Game_Fire;
+    private readonly InputAction m_Game_SpecialFire;
+    private readonly InputAction m_Game_Boost;
+    private readonly InputAction m_Game_Brake;
     private readonly InputAction m_Game_Move;
     private readonly InputAction m_Game_Look;
     private readonly InputAction m_Game_Start;
@@ -677,10 +677,10 @@ public class @GameInput : IInputActionCollection, IDisposable
     {
         private @GameInput m_Wrapper;
         public GameActions(@GameInput wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Button01 => m_Wrapper.m_Game_Button01;
-        public InputAction @Button02 => m_Wrapper.m_Game_Button02;
-        public InputAction @Button03 => m_Wrapper.m_Game_Button03;
-        public InputAction @Button04 => m_Wrapper.m_Game_Button04;
+        public InputAction @Fire => m_Wrapper.m_Game_Fire;
+        public InputAction @SpecialFire => m_Wrapper.m_Game_SpecialFire;
+        public InputAction @Boost => m_Wrapper.m_Game_Boost;
+        public InputAction @Brake => m_Wrapper.m_Game_Brake;
         public InputAction @Move => m_Wrapper.m_Game_Move;
         public InputAction @Look => m_Wrapper.m_Game_Look;
         public InputAction @Start => m_Wrapper.m_Game_Start;
@@ -698,18 +698,18 @@ public class @GameInput : IInputActionCollection, IDisposable
         {
             if (m_Wrapper.m_GameActionsCallbackInterface != null)
             {
-                @Button01.started -= m_Wrapper.m_GameActionsCallbackInterface.OnButton01;
-                @Button01.performed -= m_Wrapper.m_GameActionsCallbackInterface.OnButton01;
-                @Button01.canceled -= m_Wrapper.m_GameActionsCallbackInterface.OnButton01;
-                @Button02.started -= m_Wrapper.m_GameActionsCallbackInterface.OnButton02;
-                @Button02.performed -= m_Wrapper.m_GameActionsCallbackInterface.OnButton02;
-                @Button02.canceled -= m_Wrapper.m_GameActionsCallbackInterface.OnButton02;
-                @Button03.started -= m_Wrapper.m_GameActionsCallbackInterface.OnButton03;
-                @Button03.performed -= m_Wrapper.m_GameActionsCallbackInterface.OnButton03;
-                @Button03.canceled -= m_Wrapper.m_GameActionsCallbackInterface.OnButton03;
-                @Button04.started -= m_Wrapper.m_GameActionsCallbackInterface.OnButton04;
-                @Button04.performed -= m_Wrapper.m_GameActionsCallbackInterface.OnButton04;
-                @Button04.canceled -= m_Wrapper.m_GameActionsCallbackInterface.OnButton04;
+                @Fire.started -= m_Wrapper.m_GameActionsCallbackInterface.OnFire;
+                @Fire.performed -= m_Wrapper.m_GameActionsCallbackInterface.OnFire;
+                @Fire.canceled -= m_Wrapper.m_GameActionsCallbackInterface.OnFire;
+                @SpecialFire.started -= m_Wrapper.m_GameActionsCallbackInterface.OnSpecialFire;
+                @SpecialFire.performed -= m_Wrapper.m_GameActionsCallbackInterface.OnSpecialFire;
+                @SpecialFire.canceled -= m_Wrapper.m_GameActionsCallbackInterface.OnSpecialFire;
+                @Boost.started -= m_Wrapper.m_GameActionsCallbackInterface.OnBoost;
+                @Boost.performed -= m_Wrapper.m_GameActionsCallbackInterface.OnBoost;
+                @Boost.canceled -= m_Wrapper.m_GameActionsCallbackInterface.OnBoost;
+                @Brake.started -= m_Wrapper.m_GameActionsCallbackInterface.OnBrake;
+                @Brake.performed -= m_Wrapper.m_GameActionsCallbackInterface.OnBrake;
+                @Brake.canceled -= m_Wrapper.m_GameActionsCallbackInterface.OnBrake;
                 @Move.started -= m_Wrapper.m_GameActionsCallbackInterface.OnMove;
                 @Move.performed -= m_Wrapper.m_GameActionsCallbackInterface.OnMove;
                 @Move.canceled -= m_Wrapper.m_GameActionsCallbackInterface.OnMove;
@@ -738,18 +738,18 @@ public class @GameInput : IInputActionCollection, IDisposable
             m_Wrapper.m_GameActionsCallbackInterface = instance;
             if (instance != null)
             {
-                @Button01.started += instance.OnButton01;
-                @Button01.performed += instance.OnButton01;
-                @Button01.canceled += instance.OnButton01;
-                @Button02.started += instance.OnButton02;
-                @Button02.performed += instance.OnButton02;
-                @Button02.canceled += instance.OnButton02;
-                @Button03.started += instance.OnButton03;
-                @Button03.performed += instance.OnButton03;
-                @Button03.canceled += instance.OnButton03;
-                @Button04.started += instance.OnButton04;
-                @Button04.performed += instance.OnButton04;
-                @Button04.canceled += instance.OnButton04;
+                @Fire.started += instance.OnFire;
+                @Fire.performed += instance.OnFire;
+                @Fire.canceled += instance.OnFire;
+                @SpecialFire.started += instance.OnSpecialFire;
+                @SpecialFire.performed += instance.OnSpecialFire;
+                @SpecialFire.canceled += instance.OnSpecialFire;
+                @Boost.started += instance.OnBoost;
+                @Boost.performed += instance.OnBoost;
+                @Boost.canceled += instance.OnBoost;
+                @Brake.started += instance.OnBrake;
+                @Brake.performed += instance.OnBrake;
+                @Brake.canceled += instance.OnBrake;
                 @Move.started += instance.OnMove;
                 @Move.performed += instance.OnMove;
                 @Move.canceled += instance.OnMove;
@@ -871,10 +871,10 @@ public class @GameInput : IInputActionCollection, IDisposable
     }
     public interface IGameActions
     {
-        void OnButton01(InputAction.CallbackContext context);
-        void OnButton02(InputAction.CallbackContext context);
-        void OnButton03(InputAction.CallbackContext context);
-        void OnButton04(InputAction.CallbackContext context);
+        void OnFire(InputAction.CallbackContext context);
+        void OnSpecialFire(InputAction.CallbackContext context);
+        void OnBoost(InputAction.CallbackContext context);
+        void OnBrake(InputAction.CallbackContext context);
         void OnMove(InputAction.CallbackContext context);
         void OnLook(InputAction.CallbackContext context);
         void OnStart(InputAction.CallbackContext context);

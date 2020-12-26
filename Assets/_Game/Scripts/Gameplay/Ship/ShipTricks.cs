@@ -14,15 +14,17 @@ public class ShipTricks : MonoBehaviour
     [Header("Dependencies")]
     [SerializeField] Ship _ship = null;
 
+    [Header("General")]
+    [SerializeField] int _trickCost = 1;
+    public int TrickCost => _trickCost;
+
     [Header("Boost")]
-    [SerializeField] int _boostEnergyCost = 25;
     [SerializeField] float _boostSpeedIncrease = .2f;
     [SerializeField] float _boostDuration = .5f;
     [SerializeField] float _boostAccelToMaxInSec = .2f;
     [SerializeField] VisualEffect _boostVFX = null;
 
     [Header("Brake")]
-    [SerializeField] int _brakeEnergyCost = 25;
     [SerializeField] float _brakeSpeedDecrease = .15f;
     [SerializeField] float _brakeDuration = .5f;
     [SerializeField] float _brakeDecelInSec = .2f;
@@ -51,7 +53,7 @@ public class ShipTricks : MonoBehaviour
         if (IsBoosting)
             return;
         // check if we have enough energy
-        if (_energy.HasEnoughEnergy(_boostEnergyCost) == false)
+        if (_energy.HasEnoughEnergy(TrickCost) == false)
             return;
 
         StartBoost();
@@ -59,17 +61,18 @@ public class ShipTricks : MonoBehaviour
 
     private void StartBoost()
     {
-        IsBoosting = true;
-
-        _energy.UseEnergy(_boostEnergyCost);
-        _boostVFX.Play();
-        StartedBoost?.Invoke();
-
         // allow ability to cancel brake with a boost
         if (IsBraking)
         {
             StopBrake();
         }
+
+        IsBoosting = true;
+
+        _energy.UseEnergy(TrickCost);
+        _energy.PauseFill(_boostDuration);
+        _boostVFX.Play();
+        StartedBoost?.Invoke();
 
         if (_boostRoutine != null)
         {
@@ -103,6 +106,7 @@ public class ShipTricks : MonoBehaviour
     {
         IsBoosting = false;
 
+        _energy.ResumeFill();
         _boostVFX.Stop();
         StoppedBoost?.Invoke();
 
@@ -117,7 +121,7 @@ public class ShipTricks : MonoBehaviour
         // if we're already braking, don't allow a new request
         if (IsBraking)
             return;
-        if (_energy.HasEnoughEnergy(_brakeEnergyCost) == false)
+        if (_energy.HasEnoughEnergy(TrickCost) == false)
             return;
 
         StartBrake();
@@ -125,16 +129,18 @@ public class ShipTricks : MonoBehaviour
 
     void StartBrake()
     {
-        IsBraking = true;
-
-        _energy.UseEnergy(_brakeEnergyCost);
-        _brakeVFX.Play();
-        StartedBrake?.Invoke();
         // allow ability to cancel a boost with a brake
         if (IsBoosting)
         {
             StopBoost();
         }
+
+        IsBraking = true;
+
+        _energy.UseEnergy(TrickCost);
+        _energy.PauseFill(_brakeDuration);
+        _brakeVFX.Play();
+        StartedBrake?.Invoke();
 
         if (_brakeRoutine != null)
             StopCoroutine(_brakeRoutine);
@@ -165,6 +171,7 @@ public class ShipTricks : MonoBehaviour
     {
         IsBraking = false;
 
+        _energy.ResumeFill();
         _brakeVFX.Stop();
         StoppedBrake?.Invoke();
 

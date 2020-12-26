@@ -5,24 +5,21 @@ using UnityEngine;
 [RequireComponent(typeof(FollowTargetPosition))]
 public class ShipHUDController : MonoBehaviour
 {
+    [SerializeField] Ship _ship = null;
     [SerializeField] SimpleFillBar _healthBar = null;
-    [SerializeField] SimpleFillBar _energyBar = null;
-    [SerializeField] FollowTargetPosition _followTargetPosition = null;
+    [SerializeField] IconBar _energyBar = null;
 
-    Transform _followTarget = null;
     HealthSystem _health = null;
     EnergySystem _energy = null;
 
-    bool _started = false;
-
-    public void Initialize(HealthSystem health, EnergySystem energy, Transform followTarget)
+    private void Awake()
     {
-        _health = health;
-        _energy = energy;
-        _followTarget = followTarget;
+        _health = _ship.Health;
+        _energy = _ship.Energy;
 
-        if(_followTargetPosition != null)
-            _followTargetPosition.SetTarget(_followTarget);
+        // initialize HUD display
+        OnChangedEnergy(_energy.CurrentEnergy);
+        OnChangedMaxEnergy(_energy.MaxEnergy);
     }
 
     // because Awake and OnEnable get called before any other methods, we need to wait until we have
@@ -30,36 +27,16 @@ public class ShipHUDController : MonoBehaviour
     // Start, even though it looks complicated.
     private void OnEnable()
     {
-        if(_started)
-        {
-            Subscribe();
-        }
+        _health.ChangedHealth += OnChangedHealth;
+        _energy.ChangedEnergy += OnChangedEnergy;
+        _energy.ChangedMaxEnergy += OnChangedMaxEnergy;
     }
 
     private void OnDisable()
     {
-        Unsubscribe();
-    }
-
-    private void Start()
-    {
-        if (!_started)
-        {
-            _started = true;
-            Subscribe();
-        }
-    }
-
-    void Subscribe()
-    {
-        _health.ChangedHealth += OnChangedHealth;
-        _energy.ChangedEnergy += OnChangedEnergy;
-    }
-
-    void Unsubscribe()
-    {
         _health.ChangedHealth -= OnChangedHealth;
         _energy.ChangedEnergy -= OnChangedEnergy;
+        _energy.ChangedMaxEnergy -= OnChangedMaxEnergy;
     }
 
     void OnChangedHealth(int health)
@@ -69,6 +46,18 @@ public class ShipHUDController : MonoBehaviour
 
     void OnChangedEnergy(int energy)
     {
-        _energyBar.SetScale(energy, _energy.MaxEnergy);
+        _energyBar.FillIcons(energy);
+    }
+
+    void OnChangedMaxEnergy(int newMax)
+    {
+        if(newMax <= 0)
+        {
+            _energyBar.SetMaxIcons(0);
+        }
+        else
+        {
+            _energyBar.SetMaxIcons(newMax);
+        }
     }
 }

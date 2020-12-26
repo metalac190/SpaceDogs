@@ -48,7 +48,6 @@ public class HealthSystem : MonoBehaviour, IDamageable, IHealable
 
     public void Heal(int amount)
     {
-        Debug.Log("Heal: " + amount);
         Healed?.Invoke(amount);
 
         PlayVFX(_healVFX);
@@ -57,7 +56,6 @@ public class HealthSystem : MonoBehaviour, IDamageable, IHealable
 
     public void TakeDamage(int amount)
     {
-        Debug.Log("Damage: " + amount);
         if(_infiniteHealth == false)
         {
             CurrentHealth -= amount;
@@ -75,7 +73,6 @@ public class HealthSystem : MonoBehaviour, IDamageable, IHealable
 
     public void Kill()
     {
-        Debug.Log("Killed");
         Killed?.Invoke();
 
         PlayVFX(_deathVFX);
@@ -84,6 +81,9 @@ public class HealthSystem : MonoBehaviour, IDamageable, IHealable
 
     public void PlayVFX(VisualEffect vfxPrefab)
     {
+        if (vfxPrefab == null)
+            return;
+
         VisualEffect newPickupVFX = Instantiate
             (vfxPrefab, transform.position, transform.rotation);
 
@@ -92,6 +92,8 @@ public class HealthSystem : MonoBehaviour, IDamageable, IHealable
 
     public void PlaySFX(AudioClip audioClip)
     {
+        if (audioClip == null)
+            return;
         //TODO replace with Object Pooling
         AudioHelper.PlayClip2D(audioClip, 1);
     }

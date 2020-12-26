@@ -6,7 +6,7 @@
             "id": "e968a0be-ac0b-4c37-bf38-bdad1512fdb1",
             "actions": [
                 {
-                    "name": "Button01",
+                    "name": "Fire",
                     "type": "Button",
                     "id": "09759bf2-9cae-4180-a81a-679d10e53d51",
                     "expectedControlType": "Button",
@@ -14,7 +14,7 @@
                     "interactions": ""
                 },
                 {
-                    "name": "Button02",
+                    "name": "SpecialFire",
                     "type": "Button",
                     "id": "9b60dcad-75e6-4bd3-a605-9e0f09d8e142",
                     "expectedControlType": "Button",
@@ -22,7 +22,7 @@
                     "interactions": ""
                 },
                 {
-                    "name": "Button03",
+                    "name": "Boost",
                     "type": "Button",
                     "id": "3cc36d48-cc10-4516-8745-c5d7f7127ad5",
                     "expectedControlType": "Button",
@@ -30,7 +30,7 @@
                     "interactions": ""
                 },
                 {
-                    "name": "Button04",
+                    "name": "Brake",
                     "type": "Button",
                     "id": "d137fa0c-230b-4a53-ba74-df3e19ddb8bd",
                     "expectedControlType": "Button",
@@ -110,7 +110,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "MouseAndKeyboard",
-                    "action": "Button01",
+                    "action": "Fire",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -121,7 +121,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "MouseAndKeyboard",
-                    "action": "Button02",
+                    "action": "SpecialFire",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -260,22 +260,22 @@
                 {
                     "name": "",
                     "id": "f53ad934-ba23-4b74-b9b7-ade12c5c9e88",
-                    "path": "<Keyboard>/leftShift",
+                    "path": "<Keyboard>/w",
                     "interactions": "",
                     "processors": "",
                     "groups": "MouseAndKeyboard",
-                    "action": "Button03",
+                    "action": "Boost",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
                     "id": "ec1d9cd6-fed1-417a-b537-bcd13ebcbfe9",
-                    "path": "<Keyboard>/space",
+                    "path": "<Keyboard>/s",
                     "interactions": "",
                     "processors": "",
                     "groups": "MouseAndKeyboard",
-                    "action": "Button04",
+                    "action": "Brake",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

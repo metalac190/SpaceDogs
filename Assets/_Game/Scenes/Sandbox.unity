@@ -801,7 +801,7 @@ MonoBehaviour:
   m_NotificationBehavior: 2
   m_MaxPlayerCount: 4
   m_AllowJoining: 1
-  m_JoinBehavior: 0
+  m_JoinBehavior: 1
   m_PlayerJoinedEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -811,10 +811,10 @@ MonoBehaviour:
   m_JoinAction:
     m_UseReference: 0
     m_Action:
-      m_Name: 
+      m_Name: Join
       m_Type: 0
       m_ExpectedControlType: 
-      m_Id: 
+      m_Id: 66ee7461-2af5-4993-95ab-7a4fb1e59cde
       m_Processors: 
       m_Interactions: 
       m_SingletonActionBindings: []
@@ -1519,6 +1519,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1531807464}
   - component: {fileID: 1531807465}
+  - component: {fileID: 1531807467}
+  - component: {fileID: 1531807466}
   m_Layer: 0
   m_Name: Wall_North
   m_TagString: Untagged
@@ -1554,6 +1556,40 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1531807466
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1531807463}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c5d3ddb01a593e349b6b17d4828d9290, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _infiniteHealth: 1
+  _startingHealth: 10
+  _maxHealth: 10
+  _healSFX: {fileID: 0}
+  _healVFX: {fileID: 0}
+  _damageSFX: {fileID: 0}
+  _damageVFX: {fileID: 0}
+  _deathSFX: {fileID: 0}
+  _deathVFX: {fileID: 0}
+--- !u!114 &1531807467
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1531807463}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f261b79f4e395c478c18486ad2ca0c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _damageAmount: 999
 --- !u!1 &1654340403
 GameObject:
   m_ObjectHideFlags: 0
@@ -2076,7 +2112,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
+  m_BoundingSphereOverride: {x: 1, y: 1, z: 6, w: 2}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0

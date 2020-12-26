@@ -14,6 +14,7 @@ public class EnergySystem : MonoBehaviour
 {
     public event Action StartedNewIncrement;    // when energy refill starts a new increment tick
     public event Action<int> ChangedEnergy;     // when energy is changed at all
+    public event Action<int> ChangedMaxEnergy;  // when we get a new max
     public event Action<int> UsedEnergy;        // when energy is used by command
     public event Action<int> IncreasedEnergy;   // when energy is increased by command
     public event Action DepletedEnergy;         // when energy first hits 0
@@ -23,10 +24,19 @@ public class EnergySystem : MonoBehaviour
     [Header("Energy")]
     [SerializeField] int _startEnergy = 0;
     [SerializeField] int _maxEnergy = 100;
-    public int MaxEnergy => _maxEnergy;
+    public int MaxEnergy
+    {
+        get => _maxEnergy;
+        private set
+        {
+            if (value != _maxEnergy)
+                ChangedMaxEnergy?.Invoke(value);
+            _maxEnergy = value;
+        }
+    }
 
     [Header("Fill")]
-    [SerializeField] int _energyFillPerSecond = 10;
+    [SerializeField] float _energyFillPerSecond = 10;
     [SerializeField] float _energyFillTimeIncrement = 2f;
     public int EnergyFillPerIncrement => (int)Math.Floor(_energyFillPerSecond * _energyFillTimeIncrement);
     public bool EnergyEmpty => _currentEnergy == 0;
@@ -63,6 +73,11 @@ public class EnergySystem : MonoBehaviour
     bool _isFillPaused = false;  // controls whether or not we should be counting/filling
     Coroutine _pauseFilleRoutine = null;
 
+    private void Awake()
+    {
+        CurrentEnergy = _startEnergy;
+    }
+
     private void OnEnable()
     {
         ResetIncrement();
@@ -87,6 +102,7 @@ public class EnergySystem : MonoBehaviour
     public void IncreaseEnergy(int amount)
     {
         CurrentEnergy += amount;
+        IncreasedEnergy?.Invoke(amount);
     }
 
     public void UseEnergy(int amount)
@@ -99,6 +115,7 @@ public class EnergySystem : MonoBehaviour
         }
         // if so, use it
         CurrentEnergy -= amount;
+        UsedEnergy?.Invoke(amount);
     }
 
     public void PauseFill(float duration)
@@ -108,9 +125,16 @@ public class EnergySystem : MonoBehaviour
         _pauseFilleRoutine = StartCoroutine(PauseFillRoutine(duration));
     }
 
+    public void ResumeFill()
+    {
+        if (_pauseFilleRoutine != null)
+            StopCoroutine(_pauseFilleRoutine);
+        _isFillPaused = false;
+    }
+
     public bool HasEnoughEnergy(int amount)
     {
-        if (amount < CurrentEnergy)
+        if (amount <= CurrentEnergy)
             return true;
         else
             return false;

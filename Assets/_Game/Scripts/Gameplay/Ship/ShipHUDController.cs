@@ -18,8 +18,9 @@ public class ShipHUDController : MonoBehaviour
         _energy = _ship.Energy;
 
         // initialize HUD display
-        OnChangedEnergy(_energy.CurrentEnergy);
-        OnChangedMaxEnergy(_energy.MaxEnergy);
+        _healthBar.SetScale(_health.CurrentHealth, _health.MaxHealth);
+        _energyBar.SetMaxIcons(_energy.MaxEnergy);
+        _energyBar.FillIcons(_energy.CurrentEnergy);
     }
 
     // because Awake and OnEnable get called before any other methods, we need to wait until we have

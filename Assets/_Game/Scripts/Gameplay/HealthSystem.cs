@@ -15,16 +15,6 @@ public class HealthSystem : MonoBehaviour, IDamageable, IHealable
     [SerializeField] int _startingHealth = 10;
     [SerializeField] int _maxHealth = 10;
 
-    [Header("Feedback")]
-    [SerializeField] AudioClip _healSFX;
-    [SerializeField] VisualEffect _healVFX;
-
-    [SerializeField] AudioClip _damageSFX;
-    [SerializeField] VisualEffect _damageVFX;
-
-    [SerializeField] AudioClip _deathSFX;
-    [SerializeField] VisualEffect _deathVFX;
-
     int _currentHealth;
     public int CurrentHealth
     {
@@ -49,9 +39,6 @@ public class HealthSystem : MonoBehaviour, IDamageable, IHealable
     public void Heal(int amount)
     {
         Healed?.Invoke(amount);
-
-        PlayVFX(_healVFX);
-        PlaySFX(_healSFX);
     }
 
     public void TakeDamage(int amount)
@@ -62,9 +49,6 @@ public class HealthSystem : MonoBehaviour, IDamageable, IHealable
             Damaged?.Invoke(amount);
         }
 
-        PlayVFX(_damageVFX);
-        PlaySFX(_damageSFX);
-
         if (CurrentHealth <= 0 && _infiniteHealth == false)
         {
             Kill();
@@ -74,20 +58,6 @@ public class HealthSystem : MonoBehaviour, IDamageable, IHealable
     public void Kill()
     {
         Killed?.Invoke();
-
-        PlayVFX(_deathVFX);
-        PlaySFX(_deathSFX);
-    }
-
-    public void PlayVFX(VisualEffect vfxPrefab)
-    {
-        if (vfxPrefab == null)
-            return;
-
-        VisualEffect newPickupVFX = Instantiate
-            (vfxPrefab, transform.position, transform.rotation);
-
-        newPickupVFX.Play();
     }
 
     public void PlaySFX(AudioClip audioClip)

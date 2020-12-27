@@ -22,13 +22,11 @@ public class ShipTricks : MonoBehaviour
     [SerializeField] float _boostSpeedIncrease = .2f;
     [SerializeField] float _boostDuration = .5f;
     [SerializeField] float _boostAccelToMaxInSec = .2f;
-    [SerializeField] VisualEffect _boostVFX = null;
 
     [Header("Brake")]
     [SerializeField] float _brakeSpeedDecrease = .15f;
     [SerializeField] float _brakeDuration = .5f;
     [SerializeField] float _brakeDecelInSec = .2f;
-    [SerializeField] VisualEffect _brakeVFX = null;
  
     public bool CanBrake { get; private set; } = true;
     public bool IsBraking { get; private set; } = false;
@@ -71,7 +69,6 @@ public class ShipTricks : MonoBehaviour
 
         _energy.UseEnergy(TrickCost);
         _energy.PauseFill(_boostDuration);
-        _boostVFX.Play();
         StartedBoost?.Invoke();
 
         if (_boostRoutine != null)
@@ -107,7 +104,6 @@ public class ShipTricks : MonoBehaviour
         IsBoosting = false;
 
         _energy.ResumeFill();
-        _boostVFX.Stop();
         StoppedBoost?.Invoke();
 
         if (_boostRoutine != null)
@@ -139,7 +135,6 @@ public class ShipTricks : MonoBehaviour
 
         _energy.UseEnergy(TrickCost);
         _energy.PauseFill(_brakeDuration);
-        _brakeVFX.Play();
         StartedBrake?.Invoke();
 
         if (_brakeRoutine != null)
@@ -172,7 +167,6 @@ public class ShipTricks : MonoBehaviour
         IsBraking = false;
 
         _energy.ResumeFill();
-        _brakeVFX.Stop();
         StoppedBrake?.Invoke();
 
         if (_brakeRoutine != null)

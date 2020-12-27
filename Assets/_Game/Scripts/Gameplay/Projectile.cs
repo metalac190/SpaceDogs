@@ -28,26 +28,22 @@ public class Projectile : MonoBehaviour
     {
         //TODO projectiles colliding with other projectiles. Consider if this is intended
         // may need to increase projectile movespeed while shot from a boosted player ship
-        IDamageable damageable = otherCollision.collider.GetComponent<IDamageable>();
+
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        // ignore other triggers. We only want to explode on solid collisions
+        if (other.isTrigger)
+            return;
+        // if it's damageable, apply damage, otherwise just explode
+        IDamageable damageable = other.GetComponent<IDamageable>();
         if (damageable != null)
         {
             damageable.TakeDamage(_damageAmount);
         }
         Impact();
     }
-
-    /*
-    private void OnTriggerEnter(Collider other)
-    {
-        IDamageable damageable = other.gameObject.GetComponent<IDamageable>();
-        if(damageable != null)
-        {
-            damageable.TakeDamage(_damageAmount);
-            Impact();
-        }
-        
-    }
-    */
 
     private void Impact()
     {

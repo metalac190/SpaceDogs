@@ -16,7 +16,7 @@ public class Wall : MonoBehaviour
             {
                 rb.MoveRotation(Quaternion.Inverse(rb.rotation));
             }
-            damageable.TakeDamage(2);
+            damageable.TakeDamage(_damageAmount);
         }
     }
 }

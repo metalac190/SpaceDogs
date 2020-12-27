@@ -59,7 +59,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 0.81960785, g: 0.4563796, b: 0.14901961, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -151,7 +151,6 @@ MonoBehaviour:
   _ship: {fileID: 0}
   _healthBar: {fileID: 1089001697}
   _energyBar: {fileID: 0}
-  _followTargetPosition: {fileID: 1120893633351659543}
 --- !u!1 &1120893633375440359
 GameObject:
   m_ObjectHideFlags: 0
@@ -183,7 +182,7 @@ RectTransform:
   m_LocalScale: {x: 0.01, y: 0.01, z: 0.01}
   m_Children:
   - {fileID: 1120893633889403121}
-  - {fileID: 1615859726186074660}
+  - {fileID: 5540262424035835850}
   m_Father: {fileID: 1120893633351659542}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -312,7 +311,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 0.16037738, g: 0.14894587, b: 0.13980067, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -438,10 +437,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: IconFillBar
       objectReference: {fileID: 0}
+    - target: {fileID: 5379164473029408892, guid: e711f6422e31edf4899114df41f2ee07, type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8067496021418487809, guid: e711f6422e31edf4899114df41f2ee07, type: 3}
+      propertyPath: m_RaycastTarget
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e711f6422e31edf4899114df41f2ee07, type: 3}
---- !u!4 &1615859726186074660 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 1164454388277073298, guid: e711f6422e31edf4899114df41f2ee07, type: 3}
+--- !u!224 &5540262424035835850 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 5379164473029408892, guid: e711f6422e31edf4899114df41f2ee07, type: 3}
   m_PrefabInstance: {fileID: 451581265146546102}
   m_PrefabAsset: {fileID: 0}

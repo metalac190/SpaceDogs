@@ -511,11 +511,9 @@ MonoBehaviour:
   _boostSpeedIncrease: 0.2
   _boostDuration: 0.5
   _boostAccelToMaxInSec: 0.2
-  _boostVFX: {fileID: 2032859286807428298}
   _brakeSpeedDecrease: 0.15
   _brakeDuration: 0.5
   _brakeDecelInSec: 0.2
-  _brakeVFX: {fileID: 8238202473989808861}
 --- !u!114 &8844217829429511368
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -554,8 +552,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1721431131199008063}
+  - component: {fileID: 7382786482462857480}
+  - component: {fileID: 2111899340}
   m_Layer: 0
-  m_Name: GFX
+  m_Name: FX
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -579,6 +579,48 @@ Transform:
   m_Father: {fileID: 6780991284986635675}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7382786482462857480
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3266889189149231824}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d4033b4df1c6834fb5b43b5093cb0fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _health: {fileID: 2477870174612904947}
+  _shooting: {fileID: 1651842241942708008}
+  _tricks: {fileID: 6195233962598833110}
+  _healedVFX: {fileID: 0}
+  _damagedVFX: {fileID: 4144950927615101759, guid: 1e7b80bec07c4a3449528022513df4b0, type: 3}
+  _deathVFXPrefab: {fileID: 7241142272742920872, guid: dee5499fbe2909146b5adc3fd5b4499a, type: 3}
+  _muzzleFlashVFX: {fileID: 1682430660}
+  _boostVFX: {fileID: 2032859286807428298}
+  _brakeVFX: {fileID: 8238202473989808861}
+--- !u!114 &2111899340
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3266889189149231824}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc4efc39c4e0a6f40a726c30c5a7e325, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _health: {fileID: 2477870174612904947}
+  _shooting: {fileID: 1651842241942708008}
+  _tricks: {fileID: 6195233962598833110}
+  _healedSFX: {fileID: 8300000, guid: ef18668287c071f4ab442b310a974017, type: 3}
+  _damagedSFX: {fileID: 8300000, guid: 73cce48048c229f41ac12408e1643ba1, type: 3}
+  _deathSFX: {fileID: 8300000, guid: 32cf3af9a7547d646b16309fe1102cfb, type: 3}
+  _weaponShotSFX: {fileID: 8300000, guid: ba83c8a8dc6773241912036d6d4a4b98, type: 3}
+  _boostSFX: {fileID: 8300000, guid: e5bb3fe77a186964cb5c670cf4cf7f43, type: 3}
+  _brakeSFX: {fileID: 0}
 --- !u!1 &3713871624447539432
 GameObject:
   m_ObjectHideFlags: 0
@@ -623,8 +665,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _ship: {fileID: 3904638483324717891}
-  _muzzleFlash: {fileID: 1682430660}
-  _shootSound: {fileID: 8300000, guid: ba83c8a8dc6773241912036d6d4a4b98, type: 3}
   _defaultProjectilePrefab: {fileID: 1493539007318997787, guid: f911f600ea938f549827692e70b5d7e6, type: 3}
   _projectileSpawnPoint: {fileID: 1453263778}
 --- !u!1 &5316309619429203006
@@ -1443,12 +1483,6 @@ MonoBehaviour:
   _infiniteHealth: 0
   _startingHealth: 10
   _maxHealth: 10
-  _healSFX: {fileID: 8300000, guid: ef18668287c071f4ab442b310a974017, type: 3}
-  _healVFX: {fileID: 0}
-  _damageSFX: {fileID: 8300000, guid: 73cce48048c229f41ac12408e1643ba1, type: 3}
-  _damageVFX: {fileID: 0}
-  _deathSFX: {fileID: 8300000, guid: 32cf3af9a7547d646b16309fe1102cfb, type: 3}
-  _deathVFX: {fileID: 0}
 --- !u!1 &7915331933322393292
 GameObject:
   m_ObjectHideFlags: 0
@@ -1743,14 +1777,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 64657a41dc138404384ffdf6d70c6fc6, type: 3}
---- !u!4 &1211293243704975678 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 134562470674211712, guid: 64657a41dc138404384ffdf6d70c6fc6, type: 3}
-  m_PrefabInstance: {fileID: 1229886301675651774}
-  m_PrefabAsset: {fileID: 0}
 --- !u!2083052967 &2032859286807428298 stripped
 VisualEffect:
   m_CorrespondingSourceObject: {fileID: 947803019292819060, guid: 64657a41dc138404384ffdf6d70c6fc6, type: 3}
+  m_PrefabInstance: {fileID: 1229886301675651774}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1211293243704975678 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 134562470674211712, guid: 64657a41dc138404384ffdf6d70c6fc6, type: 3}
   m_PrefabInstance: {fileID: 1229886301675651774}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1233386275911395374

@@ -228,7 +228,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: b005f7a18f326e445925e47c9e25d0b3, type: 2}
+  - {fileID: 2100000, guid: c6103eeb39ed7724390f1c4fd7818978, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -294,7 +294,7 @@ GameObject:
   - component: {fileID: 1493539007318997786}
   - component: {fileID: 1493539007318997787}
   m_Layer: 0
-  m_Name: Projectile
+  m_Name: TurretShot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -357,6 +357,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 645adc66bf004c14eb7b438267afa8fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _moveSpeed: 20
+  _moveSpeed: 15
   _damageAmount: 5
   _impactParticle: {fileID: 5608890416281542681, guid: 27cacce1bb826a24b9bf76c81651dedd, type: 3}
